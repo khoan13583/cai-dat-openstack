@@ -67,10 +67,10 @@ $ ./exe-config-installer.sh
 Cấu trúc và chức năng của tập lệnh cài đặt OpenStack sẽ chạy trên từng máy:	
 
 ![image](https://github.com/khoan13583/cai_dat_openstack_victoria/assets/88971108/6ed52263-fe02-474f-8b1c-978d053881ef)
-
+<p>
 Tên của mỗi script có chuỗi ký tự “*StageNN*”, trong đó NN là số chỉ thứ tự của lượt chạy. Các tập lệnh này được tổ chức thành các nhóm, mỗi nhóm thực hiện một “chức năng” được chỉ định trong cột “Chức năng”.	
-
- <h3> 1. Cài đặt môi trường</h3>
+</p>
+<h3>1. Cài đặt môi trường</h3>
 <p>
 	Chuyển đến thư mục installer để phân phối các tập tin cài đặt và cấu hình đến các máy chủ.<br>
 	1) $ sudo ./exe-preinstall00-SUDO-update.sh cài đặt và cập nhật dịch vụ SSH để phân phối các tệp tin.<br>
@@ -85,15 +85,12 @@ $ pwd
 $ sudo ./exe-preinstall00-SUDO-update.sh
 $ ./exe-preinstall01-USER-set-remote-access.sh
 $ ./exe-preinstall02-USER-set-openstack-nodes.sh
-
+</pre>
+<h3>2. Cập nhật Ubuntu và cập nhật OpenStack Repository</h3>
 <p>
-สคริปต์สำหรับติดตั้งโอเพ่นสแตคจะได้รับการอันทาร์ไว้ในไดเรคทอรี่ $HOME/OPSInstaller ของแต่ละเครื่อง (ซึ่งจากข้อกำหนดว่าแอคเค้าที่จะใช้ติดตั้งโอเพ่นสแตคบนแต่ละเครื่องมีชื่อว่า “openstack” ค่า $HOME ในที่นี้จะหมายถึงไดเรคทอรี่ /home/openstack)
+Thực hiện cập nhật các máy chủ Ubuntu, cập nhật kho phần mềm APT của Ubuntu và kho dịch vụ của OpenStack để chuẩn bị cho việc cài đặt.
 <p>
-<h3>2 การอัปเดตอูบุนตูและโอเพ่นสแตครีโพสิทอรี่ (Updating Ubuntu Repository)</h3>
-<p>
-	ในอันดับถัดไป ผู้ติดตั้งจะต้องล๊อกอินเข้าสู่เครื่องคอนโทรเลอร์และ cd จากไดเรคทอรี่ $HOME เข้าสู่ไดเรคทอรี่ย่อย OPSInstaller/controller เพื่อรันสคริปต์เพื่อกำหนดค่ารีโพสิทอรี่ (Repository) ของระบบปฏิบัติการอูบุนตูลินุกซ์และอัปเดทระบบอูบุนตู 20.04 ให้พร้อมที่จะดาวน์โหลดและติดตั้งซอฟต์แวร์แพคเกจ (Ubuntu packages) จากรีโพสิทอรี่นั้น ในการกำหนดค่ารีพสิทอรี่ ซอฟต์แวร์เอพีที (APT) ของอูบุนตูจะรอให้ผู้ใช้กดเอนเตอร์ (ENTER) เพื่อให้แน่ใจว่ารีโพสิทอรี่นั้นถูกต้อง และหลังจากนั้นจะใช้เวลาในการติดตั้งพอสมควรขึ้นอยู่กับความเร็วในการดาวน์โหลดแพคเกจ และความเร็วในการอ่านเขียนหน่วยเก็บข้อมูล (storage) ของเครื่องที่ติดตั้ง 
-<p>
-  เมื่อจบการติดตั้งบนเครื่องคอนโทรเลอร์แล้ว ผู้ติดตั้งจะต้องรีบูทเครื่อง
+Khi các máy Network và hai máy Compute & Compute1 khởi động lại xong thì tiến hành khởi động lại máy Controller.
 <pre>
 On controller: 
 $ cd
@@ -104,13 +101,11 @@ Press [ENTER] to continue or Ctrl-c to cancel adding it.
 …
 update-initramfs: Generating /boot/initrd.img-5.4.0-58-generic 
 
-… จะใช้เวลาระยะหนึ่ง …
+… tốn khoảng 5-10 phút …
 $
 $ sudo reboot
 </pre>
-<pre>
-Video 03: <a href="https://youtu.be/0-xmtc00dLw">https://youtu.be/0-xmtc00dLw</a>
-</pre>
+
 <p>
   เนื่องจากผู้ติดตั้งจะต้องรันสคริปต์ exe-stage00-SUDO-update.sh บนทุกเครื่องและสคริปต์ใช้เวลารันนาน ดังนั้นผู้ติดตั้งควรรันสคริปต์บนทุกเครื่องพร้อมๆกัน หมายเหตุ:สคริปต์จะออกคำสั่งรีบูทโดยอัตโนมัติเมื่อจบการประมวลผลบนเครื่องเน็ตเวิร์ค เครื่องคอมพิวต์ และเครื่องคอมพิวต์หนึ่ง
 <pre>
