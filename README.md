@@ -8,7 +8,6 @@ Contact: khoan13583@gmail.com <br>
 	
 ![image](https://github.com/khoan13583/cai_dat_openstack_victoria/assets/88971108/0d229658-bde9-4470-b1e9-47457417c2fd)
 
-ภาพ 1 โครงสร้างของเครื่องคอมพิวเตอร์และระบบเครือข่ายสำหรับติดตั้งระบบโอเพ่นสแตค <br>
 <p>
 Có bốn máy tính được kết nối trong một hệ thống mạng: <br>
 •	Một máy tính đóng vai trò là bộ điều khiển (Controller). Chịu trách nhiệm chạy các dịch vụ, phần mềm phục vụ các lệnh yêu cầu từ người dùng hệ thống; Xác minh danh tính của người dùng; Quản lý việc sử dụng tài nguyên và là vị trí hệ thống cơ sở dữ liệu dùng để lưu trữ dữ liệu của toàn bộ hệ thống.<br>
@@ -56,46 +55,28 @@ $
 </pre>
 
 <p>
-  หลังจากที่ผู้ติดตั้งระบุค่าในไฟล์ install-paramrc.sh แล้ว ผู้ติดตั้งต้องรันสคริปต์ ./exe-config-installer.sh เพื่อสร้างสคริปต์จำนวนหนึ่งที่ได้รับการแทนค่าพารามีเตอร์ต่างๆให้พร้อมสำหรับการติดตั้ง
+  Sau khi điều chỉnh các thông số cài đặt theo mong muốn, chạy lệnh ./exe-config-installer.sh cài đặt theo các thông số đã đặt.
 <pre>
 On controller: 
 $ pwd
 /home/openstack/openstack-victoria-basic-installer
 $ ./exe-config-installer.sh
 </pre>
-<p>
-  สคริปต์ ./exe-config-installer.sh จะสร้างไดเรคทอรี่ OPSInstaller ขึ้นมาบนเครื่องคอนโทรเลอร์ ภายในไดเรคทอรี่นั้นจะมีไดเรคทอรี่ย่อยที่มีสคริปต์และไฟล์กำหนดค่า (configuration files) สำหรับเครื่องที่จะติดตั้งโอเพ่นสแตคแต่ละเครื่อง ยกตัวอย่างเช่น ไดเรคทอรี่ย่อย controller จะประกอบไปด้วยสคริปต์และไฟล์กำหนดค่าที่ได้รับการระบุค่าพารามีเตอร์แล้วสำหรับการติดตั้งบนเครื่องคอมโทรเลอร์ เป็นต้น 
-<pre>
-On controller:
-$ cd OPSInstaller/
-$ ls
-compute                   newcompute
-compute1                  remove-all-except-compute1.sh
-controller                remove-all-except-compute.sh
-Deploy-1node-controller   remove-all-except-controller.sh
-Deploy-2nodes-compute     remove-all-except-network.sh
-Deploy-2nodes-controller  remove-all-except-newcompute.sh
-installer                 replace-newcompute-genericnames.sh
-network                   scriptmap.html
-$
-</pre>
+
 <p><p>
-ตารางที่ 1 โครงสร้างและหน้าที่ของสคริปต์สำหรับช่วยติดตั้งระบบโอเพ่นสแตคที่จะต้องรันบนเครื่องคอนโทรเลอร์ เครื่องเน็ตเวิร์ค เครื่องคอมพิวต์ และเครื่องคอมพิวต์หนึ่ง
+Cấu trúc và chức năng của tập lệnh cài đặt OpenStack sẽ chạy trên từng máy:	
+
+![image](https://github.com/khoan13583/cai_dat_openstack_victoria/assets/88971108/6ed52263-fe02-474f-8b1c-978d053881ef)
+
+Tên của mỗi script có chuỗi ký tự “*StageNN*”, trong đó NN là số chỉ thứ tự của lượt chạy. Các tập lệnh này được tổ chức thành các nhóm, mỗi nhóm thực hiện một “chức năng” được chỉ định trong cột “Chức năng”.	
+
+ <h3> 1. Cài đặt môi trường</h3>
 <p>
-<img src="documents/stage-installation-table.png">
-<p>
-  ตารางที่ 1 แสดงโครงสร้างของสคริปต์ที่ถูกสร้างขึ้นที่จะได้รับการกระจายไปยังเครื่องคอนโทรเลอร์ เครื่องเน็ตเวิร์ค เครื่องคอมพิวต์และเครื่องคอมพิวต์หนึ่ง ชื่อของสคริปต์แต่ละสคริปต์จะมีชุดตัวอักษร “*StageNN*” ซึ่ง NN เป็นตัวเลขระบุอันดับของการเรียกใช้ ในตารางผู้เขียนจะแทนสคริปต์แต่ละสคริปต์ด้วยชุดตัวอักษร “StageNN” แทนที่จะเป็นชื่อทั้งหมด สคริปต์เหล่านี้จะถูกจัดเป็นกลุ่มซึ่งแต่ละกลุ่มจะทำ “หน้าที่” ดังที่ระบุในคอลัมน์ “Functions” ยกตัวอย่างเช่นสคริปต์ในทุกคอลัมน์ที่อยู่ในบรรทัดที่ค่าของ “Functions” คือ “Nova” คือสคริปต์สำหรับติดตั้งซอฟต์แวร์โนวาของระบบโอเพ่นสแตค คอลัมน์ในตารางถัดจาก “Functions” ก็คือชื่อของเครื่องคอมพิวเตอร์ที่ผู้ติดตั้งจะรันสคริปต์ “StageNN” บนเครื่องเหล่านั้น ยกตัวอย่างเช่น “Stage21-24” ในคอลัมน์ “controller” หมายถึง ผู้ติดตั้งจะต้องรันสคริปต์ที่มีชุดอักษร “Stage21” “Stage22” “Stage23” และ “Stage24” ในชื่อสคริปต์ บนเครื่องคอนโทรเลอร์
-<p>
-  ในการรันสคริปต์ มีข้อกำหนดและข้อเสนอแนะต่อไปนี้ 
-<ul>
-  <li>ข้อกำหนด ถ้าชื่อสคริปต์มีชุดอักษร “SUDO” ก็จะต้องใช้ sudo ในการรัน และถ้ามี “USER” ก็ต้องรันแบบผู้ใช้ธรรมดา ผู้ติดตั้งควรระวังและไม่ควรใช้ sudo กับ script ที่มีคำว่า “USER” อยู่ในชื่อ (หรือในทางกลับกัน) เพราะจะทำให้การติดตั้งผิดพลาดได้
-  <li>ข้อเสนอแนะ เพื่อเพิ่มความสะดวกในการติดตั้ง ผู้ติดตั้งควรจะกำหนดค่าใน /etc/sudoers ให้การใช้คำสั่ง sudo ของยูเซอร์แอคเค้าต์ “openstack” บนทุกเครื่องสามารถทำได้โดยไม่ต้องป้อนรหัสผ่าน
-</ul>
-ในอันดับถัดไป ผู้เขียนจะบรรยายถึงการใช้สคริปต์ในตารางเป็นกลุ่มตามหน้าที่ของสคริปต์ดังตาราง 1
-<p>
- <h3> 1 การกระจายสคริปต์และไฟล์กำหนดค่าไปยังเครื่องที่จะติดตั้ง (Script distribution)</h3>
-<p>
-	ไดเรคทอรี่ย่อย installer บรรจุสคริปต์ที่ใช้สำหรับการกระจายไฟล์และข้อมูลสำหรับการติดตั้งไปยังเครื่องที่จะติดตั้งระบบฯแต่ละเครื่อง ผู้ติดตั้งจะต้อง cd เข้าสู่ installer และรันสคริปต์สามสคริปต์ดังนี้ 1) sudo ./exe-preinstall00-SUDO-update.sh เพื่อติดตั้งซอฟต์แวร์สำหรับกระจายข้อมูล และ 2) ./exe-preinstall01-USER-set-remote-access.sh เพื่อกำหนดค่า private key และ public key เพื่อให้สามารถรีโมทเอ็กซีคิวชั่นและถ่ายโอนข้อมูลได้โดยไม่ต้องระบบรหัสผ่าน และ 3) ./exe-preinstall02-USER-set-openstack-nodes.sh เป็นสคริปต์ที่รวมคำสั่งสำหรับถ่ายโอนสคริปต์และไฟล์กำหนดค่าในรูปของทาร์บอล (tarball) ไปยังเครื่องที่จะติดตั้งทุกเครื่องและออกคำสั่งให้อันทาร์ (untar) สคริปต์และไฟล์ดังกล่าวบนเครื่องเหล่านั้น 
+	Chuyển đến thư mục installer để phân phối các tập tin cài đặt và cấu hình đến các máy chủ.<br>
+	1) $ sudo ./exe-preinstall00-SUDO-update.sh cài đặt và cập nhật dịch vụ SSH để phân phối các tệp tin.<br>
+ 	2) ./exe-preinstall01-USER-set-remote-access.sh định cấu hình Private key (khóa riêng) và Public key (khóa chung) để cho phép thực thi và truyền dữ liệu từ xa mà không cần mật khẩu.<br>
+  	3) ./exe-preinstall02-USER-set-openstack-nodes.sh phân phối các tập tin dưới dạng tarball (tập tin nén) đến các máy tương ứng. <br>
+	
 <pre>
 On controller: 
 $ cd installer
@@ -104,10 +85,7 @@ $ pwd
 $ sudo ./exe-preinstall00-SUDO-update.sh
 $ ./exe-preinstall01-USER-set-remote-access.sh
 $ ./exe-preinstall02-USER-set-openstack-nodes.sh
-</pre>
-<pre>
-Video 02: <a href="https://youtu.be/k4zK2FWSKXo">https://youtu.be/k4zK2FWSKXo</a>
-</pre>
+
 <p>
 สคริปต์สำหรับติดตั้งโอเพ่นสแตคจะได้รับการอันทาร์ไว้ในไดเรคทอรี่ $HOME/OPSInstaller ของแต่ละเครื่อง (ซึ่งจากข้อกำหนดว่าแอคเค้าที่จะใช้ติดตั้งโอเพ่นสแตคบนแต่ละเครื่องมีชื่อว่า “openstack” ค่า $HOME ในที่นี้จะหมายถึงไดเรคทอรี่ /home/openstack)
 <p>
