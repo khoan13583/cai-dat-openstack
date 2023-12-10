@@ -34,12 +34,34 @@ Chuẩn bị hệ thống mạng kết nối bốn máy tính như sau:
 
 ![image](https://github.com/khoan13583/cai_dat_openstack_victoria/assets/88971108/cd31235d-6eaa-44aa-83aa-6b02dd6d8e90)
 
-3. fdafs
+3. Mô hình cài đặt  
 
+Thông tin chi tiết các dịch vụ được cài đặt trên các Node được thể hiện như hình bên dưới:  
 
+![image](https://github.com/khoan13583/cai_dat_openstack_victoria/assets/88971108/02b175f0-b5e7-4719-acdc-ea28bd49dccf)  
 
-4. sádas
-5. dádas
+•	Máy tính đóng vai trò là bộ điều khiển (Controller): Dịch vụ cơ sở dữ liệu MariaDB, RabbitMQ, Keystone, Glance, Placement, Nova, Neutron, Horizon, Cinder.  
+•	Máy tính đóng vai trò quản lý hệ thống mạng (Network): Dịch vụ cơ sở dữ liệu MariaDB, Neutron.  
+•	Hai máy tính đóng vai trò tính toán (Compute và Compute1): Dịch vụ cơ sở dữ liệu MariaDB, Nova, Neutron, Cinder.  
+
+4. Cài đặt hệ thống  
+
+Việc triển khai hệ thống gồm 3 giai đoạn:  
+1.	Tạo các máy ảo (có thể bỏ qua giai đoạn này nếu triển khai trên máy thật).  
+2.	Cập nhật và cài đặt môi trường cho các máy ảo trước khi cài đặt.  
+3.	Tiến hành bằng cách thực hiện các tập tin Shell Script đã được chuẩn bị theo từng bước như bên dưới.  
+
+![image](https://github.com/khoan13583/cai_dat_openstack_victoria/assets/88971108/c0158b7d-b0e3-4203-9142-1b8d00b9d532)
+
+Mô hình tóm tắt các bước cài đặt được mô tả ở hình bên dưới:  
+Ghi chú:  
+
+![image](https://github.com/khoan13583/cai_dat_openstack_victoria/assets/88971108/0a00e13b-b9e3-469b-9869-e0990c8f27ba)  
+
+![image](https://github.com/khoan13583/cai_dat_openstack_victoria/assets/88971108/687e9a85-35a4-46aa-8f88-f2b8752abb8c)  \
+
+5. Tiến hành cài đặt
+   
 
 
 
