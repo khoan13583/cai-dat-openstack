@@ -70,8 +70,48 @@ Cloning into 'openstack-victoria-basic-installer'...
 $ ls  
 openstack-victoria-basic-installer  
 
-7. Đ
-  5.1. Cài đặt môi trường 
+6. Cài đặt hệ thống  
+6.1. Cài đặt môi trường
+   
+Trên máy Controller:  
+$ cd openstack-victoria-basic-installer/  
+
+Tiến hành truy cập vào file /installer/install-paramrc.sh và điều chỉnh các thông số. Sau khi điều chỉnh các thông số theo mong muốn thì thực hiện lệnh bên dưới để cài đặt các cấu hình hệ thống:   
+$ ./exe-config-installer.sh
+
+6.2. Cập nhật và phân phối các file cài đặt, cấu hình  
+Chuyển đến thư mục installer để phân phối các tập tin cài đặt và cấu hình đến các máy chủ.  
+Thực hiện trên máy Controller:  
+- Cài đặt và cập nhật dịch vụ SSH để phân phối các tệp tin:  
+$ sudo ./exe-preinstall00-SUDO-update.sh
+
+-	Định cấu hình Private key (khóa riêng) và Public key (khóa chung) để cho phép thực thi và truyền dữ liệu từ xa mà không cần mật khẩu:
+$ ./exe-preinstall01-USER-set-remote-access.sh
+
+-	Phân phối các tập tin dưới dạng tarball (tập tin nén) đến các máy chủ tương ứng:  
+$ ./exe-preinstall02-USER-set-openstack-nodes.sh
+
+6.3. Cập nhật Ubuntu và OpenStack Repository  
+
+Thực hiện cập nhật các máy chủ Ubuntu, cập nhật kho phần mềm APT của Ubuntu và kho dịch vụ của OpenStack để chuẩn bị cho việc cài đặt.  
+Thực hiện trên máy Controller (chuyển đến thư mục /controller):  
+-	Tiến hành cập nhật:  
+$ sudo ./exe-stage00-SUDO-update.sh
+
+Thực hiện trên máy Network (chuyển đến thư mục /network):  
+-	Tiến hành cập nhật:  
+$ sudo ./exe-stage00-SUDO-update.sh
+ 
+Thực hiện trên máy lần lượt trên hai máy chủ Compute và Compute1 (chuyển đến thư mục /compute và /compute1):  
+-	Tiến hành cập nhật:  
+$ sudo ./exe-stage00-SUDO-update.sh  
+
+
+
+
+
+
+
 
 
 
