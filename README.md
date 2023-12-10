@@ -107,7 +107,7 @@ $ sudo reboot
 </pre>
 
 <p>
-  เนื่องจากผู้ติดตั้งจะต้องรันสคริปต์ exe-stage00-SUDO-update.sh บนทุกเครื่องและสคริปต์ใช้เวลารันนาน ดังนั้นผู้ติดตั้งควรรันสคริปต์บนทุกเครื่องพร้อมๆกัน หมายเหตุ:สคริปต์จะออกคำสั่งรีบูทโดยอัตโนมัติเมื่อจบการประมวลผลบนเครื่องเน็ตเวิร์ค เครื่องคอมพิวต์ และเครื่องคอมพิวต์หนึ่ง
+ Thực hiện trên máy Network (chuyển đến thư mục /network) và thực hiện trên máy lần lượt trên hai máy chủ Compute và Compute1 (chuyển đến thư mục /compute và /compute1):
 <pre>
 On network: 
 $ cd OPSInstaller/network/
@@ -123,11 +123,10 @@ $ sudo ./exe-stage00-SUDO-update.sh
 …
 </pre>
 <p>
-<h3>3 การกำหนดการเชื่อมต่อระบบเครือข่าย (Setting up Network Interfaces)</h3>
+<h3>3. Thiết lập giao diện mạng (Setting up Network Interfaces)</h3>
 <p>
-  หลังจากที่ทุกเครื่องได้รับการรีบูทแล้ว ผู้ติดตั้งจะต้องรันสคริปต์บนเครื่องคอนโทรเลอร์เพื่อกำหนดค่าไอพีและแอคติเวท (Activate) นิคส์ที่โอเพ่นสแตคต้องใช้บนเครื่องที่จะติดตั้งทุกเครื่องดังภาพ 1 ในอันดับแรกผู้ติดตั้งจะต้องล็อกอินเข้าสู่เครื่องคอนโทรเลอร์ cd เข้าสู่ไดเรคทอรี่ OPSInstaller/controller/ และรันสคริปต์ exe-stage01-SUDO-preinstall.sh ซึ่งจะกำหนดค่าในไฟล์ /etc/network/interfaces และไฟล์ /etc/hosts 
-<p>
-	<b>หมายเหตุ:</b> ผู้ติดตั้งควรสร้างสกรีนแซสชั่น (screen session) ไว้บน<b>ทุกเครื่องที่ผู้ติดตั้งล็อกอินเข้าใช้งานโดยตรง</b>จากเครื่องโลคอลคอมพิวเตอร์ (Local computer) เช่นโน๊ตบุ้คคอมพิวเตอร์ หรือเดสค์ท้อปคอมพิวเตอร์ของผู้ติดตั้ง เพื่อป้องกันกรณีเน็ตเวิร์คขาดการเชื่อมต่อ (network disconnection) ในระหว่างติดตั้ง ขอให้ศึกษาการใช้งานสกรีนยูทิลิตี้ (screen utility) ด้วยตนเอง
+Sau khi tất cả các máy chủ đã được khởi động lại, tiến hành định cấu hình IP (địa chỉ mạng) và kích hoạt các NIC (card giao tiếp mạng) mà OpenStack yêu cầu trên các máy chủ.
+
 <pre>
 On controller: 
 $ screen
@@ -135,76 +134,34 @@ $ cd OPSInstaller/controller/
 $ sudo ./exe-stage01-SUDO-preinstall.sh
 $ 
 </pre>
-<pre>
-Video 04: <a href="https://youtu.be/xA9bMdL4yKE">https://youtu.be/xA9bMdL4yKE</a>
-</pre>
-บนเครื่องเน็ตเวิร์ค ให้ cd ไปที่ OPSInstaller/network และรันสคริปต์ exe-stage02-SUDO-network-preinstall.sh ซึ่งจะรายงานเอ้าพุทต์เป็นรายการของนิคส์ที่ได้รับการกำหนดค่าไอพีได้แก่นิคส์ ens3 และ ens4 และที่ไม่มีค่าไอพีแต่ถูกแอคติเวทสำหรับให้โอเพ่นสแตคใช้ได้แก่ ens5 และ ens6 
+
+Thực hiện trên máy Network (chuyển đến thư mục /network):
 <pre>
 On network: 
 $ cd OPSInstaller/network/
 $ sudo ./exe-stage02-SUDO-network-preinstall.sh
-…
-ens3: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
-        inet 10.100.20.21  netmask 255.255.255.0  broadcast 10.100.20.255
-…
-ens4: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
-        inet 10.0.1.21  netmask 255.255.255.0  broadcast 10.0.1.255
-…
-ens5: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
-        inet6 fe80::281:50ff:fe00:393  prefixlen 64  scopeid 0x20<link>
-…
-ens6: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
-        inet6 fe80::281:50ff:fe00:493  prefixlen 64  scopeid 0x20<link>
-…
-$ 
+
 </pre>
-บนเครื่องคอมพิวต์ ให้ทำคล้ายกับบนเครื่องเน็ตเวิร์ค เพื่อรันสคริปต์ exe-stage03-SUDO-compute-preinstall.sh ซึ่งจะให้ผลลัพธ์คล้ายกับการรันสคริปต์บนเครื่องเน็ตเวิร์ค 
+Thực hiện lần lượt trên hai máy chủ Compute và Compute1 (chuyển đến thư mục /compute và /compute1):
 <pre>
 On compute: 
 $ cd OPSInstaller/compute/
 $ sudo ./exe-stage03-SUDO-compute-preinstall.sh
-…
-ens3: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
-        inet 10.100.20.31  netmask 255.255.255.0  broadcast 10.100.20.255
 ...
-ens4: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
-        inet 10.0.1.31  netmask 255.255.255.0  broadcast 10.0.1.255
-...
-ens5: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
-        inet6 fe80::281:50ff:fe00:394  prefixlen 64  scopeid 0x20<link>
-...
-ens6: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
-        inet6 fe80::281:50ff:fe00:494  prefixlen 64  scopeid 0x20<link>
- …
-$ 
 </pre>
-บนเครื่องคอมพิวต์หนึ่ง ทำเช่นเดียวกันกับที่ทำบนเครื่องคอมพิวต์ 
+
 <pre>
 On compute1: 
 $ cd OPSInstaller/compute1/
 $ sudo ./exe-stage03-SUDO-compute-preinstall.sh
-ens3: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
-        inet 10.100.20.32  netmask 255.255.255.0  broadcast 10.100.20.255
 ...
-ens4: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
-        inet 10.0.1.32  netmask 255.255.255.0  broadcast 10.0.1.255
-...
-ens5: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
-        inet6 fe80::281:50ff:fe00:395  prefixlen 64  scopeid 0x20<link>
-...
-ens6: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
-        inet6 fe80::281:50ff:fe00:495  prefixlen 64  scopeid 0x20<link>
-…
-$ 
 </pre>
+
 <p>
-<h3>4 ติดตั้งระบบฐานข้อมูลมาเรียดีบี mariadb และกำหนดค่าเริ่มต้น (Setting up mariadb)</h3>
+<h3>4. Cài đặt hệ thống cơ sở dữ liệu MariaDB (Setting up mariadb)</h3>
 <p>
-ระบบโอเพ่นสแตคใช้ระบบฐานข้อมูลมาเรียดีบี mariadb [3] ซึ่งเป็นระบบฐานข้อมูลแบบโอเพ่นซอร์สที่โอเพ่นสแตคใช้เก็บข้อมูลเมตาดาต้า (metadata) ผู้ติดตั้งต้องรันสคริปต์ exe-stage04-SUDO-mysql.sh บนเครื่องคอนโทรเลอร์ ซึ่งสคริปต์จะทำหน้าที่ต่อไปนี้ 
-<ul>
-  <li>	ใช้ซอฟต์แวร์โครนี่ (chronyc) ซิงค์โครไนซ์ (synchronize) เวลากับเอ็นทีพีเซริฟเวอร์ 
-  <li>	ติดตั้งระบบฐานข้อมูลมาเรียดีบี โดยที่หลังจากติดตั้งสคริปต์จะรันคำสั่ง mysql_secure_installation เพื่อให้ผู้ติดตั้งกำหนดค่าเริ่มต้นให้กับระบบฐานข้อมูล ขอให้ผู้ติดตั้งดูรายละเอียดการป้อนข้อมูลตามรายละเอียดข้างล่าง (ในกรณีที่มีคำถามเพิ่มมากกว่าที่แสดงข้างล่างได้แก่ คำถามเกี่ยวกับการเปลี่ยนการเข้าถึง sql เซริฟเวอร์ด้วย UNIX Socket ขอให้ตอบ Yes)
-</ul>
+ MariaDB là một hệ quản trị cơ sở dữ liệu mã nguồn mở được phát triển từ MySQL. Trong môi trường OpenStack, MariaDB thường được sử dụng làm cơ sở dữ liệu cho các dịch vụ do tính nhất quán với mô hình mã nguồn mở của OpenStack.
+Thực hiện trên máy Controller (chuyển đến thư mục /controller) để sử dụng phần mềm chronyc để đồng bộ thời gian với máy chủ NTP, đồng thời cài đặt hệ thống cơ sở dữ liệu MariaDB:
 <pre>
 On controller: 
 $ pwd
@@ -213,34 +170,34 @@ $ sudo ./exe-stage04-SUDO-mysql.sh
 …
 *** First, enter blank for mysql password. Then set new password to mysqlpassword ***
 …
-Enter current password for root (enter for none): กด enter
+Enter current password for root (enter for none): ấn enter
 …
-Change the root password? [Y/n] ใส่ Y
+Change the root password? [Y/n] nhập Y
 …
 New password: mysqlpassword
 Re-enter new password: mysqlpassword
 …
-Remove anonymous users? [Y/n] ใส่ y
+Remove anonymous users? [Y/n] nhập Y
 …
-Disallow root login remotely? [Y/n] ใส่ y
+Disallow root login remotely? [Y/n] nhập Y
 …
-Remove test database and access to it? [Y/n] ใส่ y
+Remove test database and access to it? [Y/n] nhập Y
 …
-Reload privilege tables now? [Y/n] ใส่ y
-…
+Reload privilege tables now? [Y/n] nhập Y
 $ 
 </pre>
-<pre>
-Video 05: <a href="https://youtu.be/QJoHuwriN58">https://youtu.be/QJoHuwriN58</a>
-Video 06: <a href="https://youtu.be/a5btD1shM1c">https://youtu.be/a5btD1shM1c</a>
-</pre>
-ถัดไป บนเครื่องเน็ตเวิร์ค ให้รันสคริปต์ exe-stage05-SUDO-network-mysql.sh ดังคำสั่งข้างล่าง สคริปต์จะรันซอฟต์แวร์โครนี่เพื่อซิงโครไนซ์เวลากับเครื่องคอนโทรเลอร์ หลังจากนั้นให้ล็อกอินเข้าสู่เครื่องคอมพิวต์และคอมพิวต์หนึ่งเพื่อรันสคริปต์ exe-stage06-SUDO-compute-mysql.sh ซึ่งจะทำเช่นเดียวกันกับสคริปต์ที่เพิ่งรันบนเครื่องเนตเวิร์ค 
+
+Thực hiện trên máy Network (chuyển đến thư mục /network) để chạy phần mềm chronyc để đồng bộ thời gian với máy điều khiển (Controller), đồng thời cài đặt hệ thống cơ sở dữ liệu MariaDB:
 <pre>
 On network: 
 $ cd OPSInstaller/network/
 $ sudo ./exe-stage05-SUDO-network-mysql.sh
 $ 
 ...
+</pre>
+
+Thực hiện trên máy lần lượt trên hai máy chủ Compute và Compute1 (chuyển đến thư mục /compute và /compute1) chạy phần mềm chronyc để đồng bộ thời gian với máy điều khiển (Controller), đồng thời cài đặt hệ thống cơ sở dữ liệu MariaDB:
+<pre>
 On compute: 
 $ cd OPSInstaller/compute/
 $ sudo ./exe-stage06-SUDO-compute-mysql.sh
@@ -252,48 +209,33 @@ $ sudo ./exe-stage06-SUDO-compute-mysql.sh
 $ 
 </pre>
 <p>
-<h3>5 ติดตั้งระบบสื่อสารแรบบิทเอ็มคิว (Setting up rabbitmq)</h3>
+<h3>5. Cài đặt phần mềm RabbitMQ (Setting up rabbitmq)</h3>
 <p>
-ระบบโอเพ่นสแตกใช้ซอฟต์แวร์แรบบิทเอ็มคิว rabbitmq [6] ซึ่งเป็นซอฟต์แวร์แบบโอเพ่นซอร์สที่ปฏิบัติงานเป็นแมสเสจ-โบรคเกอร์ (Message-Broker) ที่รองรับการสื่อสารข้อมูลของโปรโตคอลจัดการคิวข้อความขั้นสูง (Advanced Message Queue Protocol) หรือ เอเอ็มคิวพี (AMQP) และโปรโตคอลอื่นๆ อาทิเช่น เอสทีโอเอ็มพี (STOMP) และ เอ็มคิวทีที (MQTT) เป็นต้น โอเพ่นสแตกใช้ซอฟต์แวร์นี้สื่อสารคำสั่งและข้อมูลระหว่างซอฟต์แวร์ส่วนประกอบต่างที่อาจอยู่บนโฮสเครื่องเดียวกันหรือต่างเครื่องกัน 
+Trong môi trường điện toán đám mây, như OpenStack, RabbitMQ thường được sử dụng để quản lý và truyền tải các thông điệp giữa các thành phần khác nhau của hệ thống. 
+OpenStack sử dụng phần mềm này để giao tiếp các lệnh và dữ liệu giữa các thành phần phần mềm khác nhau có thể nằm trên cùng một chủ hoặc trên các máy khác nhau. <br>
 <p>
-	ต่อจากการติดตั้งมาเรียดีบี ผู้ติดตั้งจะต้องรันสคริปต์ exe-stage07-SUDO-rabbit.sh เพื่อติดตั้งแรบบิทเอ็มคิวบนเครื่องคอนโทรเลอร์
+	Thực hiện trên máy Controller (chuyển đến thư mục /controller) để cài đặt phần mềm RabbitMQ lên máy chủ điều khiển: 
 <pre>
 On controller: 
 $ sudo ./exe-stage07-SUDO-rabbit.sh
 </pre>
-<pre>
-Video 07: <a href="https://youtu.be/awlGBHDcR0M">https://youtu.be/awlGBHDcR0M</a>
-</pre>
+
 <p>
-<h3>6 ติดตั้งคีย์สโตน (Keystone Installation)</h3>
+<h3>6. Cài đặt Keystone (Keystone Installation)</h3>
 <p>
-คีย์สโตน (keystone) คือซอฟต์แวร์คอมโพเน้น (component) ของระบบโอเพ่นสแตคที่ทำหน้าที่ตรวจสอบตัวตนและกำหนดสิทธิ์การใช้งานของผู้ใช้ ผู้ติดตั้งต้องรันสคริปต์บนเครื่องคอนโทรเลอร์ ได้แก่สคริปต์ exe-stage08-SUDO-keystone-database.sh เพื่อสร้างเทเบิ้ล (Tables) ในมาเรียดีบีที่คีย์สโตนต้องใช้ และสคริปต์ exe-stage09-SUDO-keystone.sh เพื่อติดตั้งซอฟต์แวร์เพจเกจสำหรับรันคีย์สโตน
+Thực hiện trên máy Controller (chuyển đến thư mục /controller) để cài đặt Keystone lên máy chủ điều khiển: 
 <pre>
 On controller: 
 $ sudo ./exe-stage08-SUDO-keystone-database.sh
 $ sudo ./exe-stage09-SUDO-keystone.sh
-</pre>
-<pre>
-Video 08: <a href="https://youtu.be/VSFFFQY89dE">https://youtu.be/VSFFFQY89dE</a>
-</pre>
-
-หลังจากนั้นผู้ติดตั้งจะ 1) สร้างเซอร์วิสโปรเจค (Service Project) เพื่อเตรียมให้บริการพิสูจน์ตัวตนและสิทธิการใช้งานของคีย์สโตนแก่เซอร์วิสต่างๆของระบบโอเพ่นสแตคที่จะได้รับารติดตั้งต่อไป โดยรันสคริปต์ exe-stage10-USER-service-endpoints.sh และ 2) ทดสอบคีย์สโตนโดยรันสคริปต์ exe-stage11-USER-test-envscript.sh 
-<p>
-หมายเหตุ: ขอให้สังเกตว่าผู้ติดตั้งต้องรันสคริปต์ทั้งสองโดยใช้ยูเซอร์แอคเค้าต์ธรรมดา (ยูเซอร์ openstack) เนื่องจากชื่อสคริปต์มีชุดอักษร “USER” อยู่ในนั้น หากผู้ติดตั้งใช้ sudo จะเกิดความผิดพลาดขึ้นในการรันสคริปต์ในอนาคต
-<pre>
-On controller: 
 $ ./exe-stage10-USER-service-endpoints.sh
 $ ./exe-stage11-USER-test-envscript.sh
 </pre>
-<pre>
-Video 09: <a href="https://youtu.be/TT5z0rMfI-8">https://youtu.be/TT5z0rMfI-8</a>
-</pre>
+
 <p>
-<h3>7 ติดตั้งแกล๊นซ์ (Glance Installation)</h3>
+<h3>7. Cài đặt Glance (Glance Installation)</h3>
 <p>
-แกล๊นซ์ (glance) (หรือ โอเพ่นสแตค อิมเมจ) (OpenStack Image) เป็นซอฟต์แวร์คอมโพเน้นของโอเพ่นสแตคที่ทำหน้าที่เก็บ เทมแพลต (Template) ของดิสค์อิมเมจของระบบปฏิบัติการที่จะใช้เป็นเกสท์โอเอส (Guest OS) ของวีเอ็ม ยกตัวอย่างเช่นถ้าผู้ติดตั้งต้องการให้ระบบโอเพ่นสแตคสามารถรันวีเอ็มที่มีเกสโอเอสเป็น วินโดวส์ 10 (Windows 10) หรือ เรดแฮท เอนเตอร์ไพร์ซลินุกส์ (Redhat Enterprise Linux) หรือ อูบุนตู เวอร์ชั่น 20.04 เป็นต้น ผู้ติดตั้งจะต้องนำเข้าเทมเพลตของดิสค์อิมเมจของเกสโอเอสเหล่านั้นในระบบแกล๊นซ์ 
-<p>
-ในการติดตั้ง ผู้ติดตั้งจะต้องรัน 1) สคริปต์ exe-stage12-SUDO-glance-database.sh เพื่อสร้างเทเบิ้ลสำหรับการประมวลผลของแกล๊นซ์ในระบบฐานข้อมูล 2) สคริปต์ exe-stage13-USER-glance-endpoints.sh เพื่อสร้างยูอาร์แอลสำหรับให้บริการแกล๊นซ์ (glance endpoints) เพื่อให้ซอฟต์แวร์อื่นติดต่อแกล๊นซ์ได้ 3) สคริปต์ exe-stage14-SUDO-glance.sh และ exe-stage14-x1-SUDO-glance.sh เพื่อติดตั้งซอฟต์แวร์เพคเกจของแกล๊นซ์ และ 4) สคริปต์ exe-stage15-USER-verify-glance.sh เพื่อทดสอบแกล๊นซ์ โดยจะดาวน์โหลด ดิสค์อิมเมจของระบบปฏิบัติการเซอร์รอส (cirros) ดังที่ระบุในไฟล์ install_paramrc.sh ถ้าสคริปต์ดาวน์โหลดสำเร็จ ดิสค์อิมเมจนั้นจะได้รับการนำเข้าไปเก็บใน ดิสค์เทมแพลตรีโพสิทอรี่ของระบบแกล๊นซ์ (ในกรณีที่ดาวน์โหลดไม่สำเร็จ อาจมีสาเหตุเนี่องมาจากการป้องกันการโจมตีแบบดีดีโอเอส (DDOS) ของเว็ปไซต์ของเซอร์รอส ขอให้ผู้ติดตั้งรอสักระยะหนึ่งแล้วลองดาวน์โหลดอิมเมจใหม่) 
+Thực hiện trên máy Controller (chuyển đến thư mục /controller) để cài đặt Glance lên máy chủ điều khiển:
 <pre>
 On controller: 
 $ sudo ./exe-stage12-SUDO-glance-database.sh
@@ -302,28 +244,22 @@ $ sudo ./exe-stage14-SUDO-glance.sh
 $ sudo ./exe-stage14-x1-SUDO-glance.sh
 $ ./exe-stage15-USER-verify-glance.sh
 </pre>
-<pre>
-Video 10: <a href="https://youtu.be/zuZeXJokraA">https://youtu.be/zuZeXJokraA</a>
-</pre>
+
 <p>
-<h3>8 ติดตั้งแพลซเม้นท์ (Placement Installation)</h3>
+<h3>8. Cài đặt Placement (Placement Installation)</h3>
 <p>
-แพลซเม้นท์ เป็นซอฟต์แวร์คอมโพเน้นของโอเพ่นสแตคที่ให้บริการหนดคลาส (class) และคุณสมบัติของทรัพยากรในระบบเช่น ซีพียูเสมือน หน่วยความจำ และหน่วยเก็บข้อมูล เป็นต้น และเก็บข้อมูลประวัติการใช้งาน (Tracking) ของทรัพยากรเหล่านั้น 
+Nền tảng là một dịch vụ phần mềm ngăn xếp mở có chức năng xác định các lớp và thuộc tính của tài nguyên hệ thống như CPU ảo, bộ nhớ và bộ lưu trữ, đồng thời thu thập dữ liệu lịch sử sử dụng (theo dõi) của các tài nguyên đó.
 <p>
-ในการสร้างวีเอ็ม โอเพ่นสแตคจะใช้แพลซเม้นท์สร้างคลาสของทรัพยากรที่มีอยู่เช่น โฮสคอมพิวเตอร์ ซีพียู หน่วยความจำและหน่วยเก็บข้อมูล และหลังจากนั้น แพลซเม้นท์จะใช้ข้อมูลของคลาสเหล่านี้เพื่อให้บริการผู้ใช้หรือซอฟต์แวร์คอมโพเน้นอื่น ยกตัวอย่างเช่น ผู้ใช้อาจเรียกใช้แพลซเม้นท์เพื่อขอข้อมูลสถานะการใช้งานของทรัพยากรที่มีอยู่ในปัจจุบัน หรือซอฟต์แวร์คอมโพเน้นหนึ่งเรียกใช้แพลซเม้นท์เพื่อขอรายการของทรัพยากรที่มีปริมาณเพียงพอสำหรับประมวลผลแบบใดแบบหนึ่ง เป็นต้น 
-<p>
-ในการติดตั้ง ผู้ติดตั้งจะต้องรันสคริปต์ 1) exe-stage15-x1-SUDO-placement-database.sh เพื่อสร้างเทเบิ้ลในระบบฐานข้อมูล 2) exe-stage15-x2-USER-placement-endpoints.sh เพื่อสร้างยูอาร์แอลสำหรับให้บริการแพลซเม้นเซอร์วิส และ 3) exe-stage15-x3-SUDO-placement.sh เพื่อตืดตั้งซอฟต์แวร์แพคเกจของแพลซเม้นท์
+Thực hiện trên máy Controller (chuyển đến thư mục /controller) để cài đặt Placement lên máy chủ điều khiển:
 <pre>
 On controller: 
 $ sudo ./exe-stage15-x1-SUDO-placement-database.sh
 $ ./exe-stage15-x2-USER-placement-endpoints.sh
 $ sudo ./exe-stage15-x3-SUDO-placement.sh
 </pre>
-<pre>
-Video 11: <a href="https://youtu.be/Owcv17f2MAg">https://youtu.be/Owcv17f2MAg</a>
-</pre>
+
 <p>
-<h3>9 ติดตั้งโนวา (Nova Installation)</h3>
+<h3>9. Cài đặt Nova (Nova Installation)</h3>
 <p>
 โนวา (Nova) (หรือ โอเพ่นสแตค คอมพิวต์) (OpenStack Compute) เป็นซอฟต์แวร์คอมโพเน้นสำคัญของระบบโอเพ่นสแตคที่ทำหน้าที่ให้บริการและบริหารจัดการประมวลผลวีเอ็มบนเครื่องโฮสคอมพิวเตอร์ที่เป็นทรัพยากรสำหรับการประมวลผลกลุ่มเมฆภายในระบบโอเพ่นสแตค โครงสร้างของโนวาประกอบไปด้วยซอฟต์แวร์เอเจนท์ (agent) หลายเอเจนท์ที่รันอยู่บนเครื่องคอนโทรเลอร์ เครื่องคอมพิวต์โฮส (เครื่องคอมพิวต์และคอมพิวต์หนึ่ง) 
 <p>
