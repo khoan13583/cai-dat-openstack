@@ -61,7 +61,17 @@ Ghi chú:
 ![image](https://github.com/khoan13583/cai_dat_openstack_victoria/assets/88971108/687e9a85-35a4-46aa-8f88-f2b8752abb8c)  \
 
 5. Tiến hành cài đặt
-   
+
+Git clone về máy controller:  
+$ screen  
+$ git init  
+$ git clone https://github.com/kasidit/openstack-victoria-basic-installer  
+Cloning into 'openstack-victoria-basic-installer'...  
+$ ls  
+openstack-victoria-basic-installer  
+
+7. Đ
+  5.1. Cài đặt môi trường 
 
 
 
