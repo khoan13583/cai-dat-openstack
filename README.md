@@ -1,2 +1,2 @@
-# cai_dat_openstack_victoria
-
+1. Phương pháp thực hiện
+2. 
