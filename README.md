@@ -1,51 +1,38 @@
 # openstack-victoria-basic-installer
 
-Author: กษิดิศ ชาญเชี่ยว <br>
-Contact: kasiditchanchio@gmail.com <br>
+Author: Nguyễn Trần Đăng Khoa <br>
+Contact: khoan13583@gmail.com <br>
 
 <p>
-สคริปต์ได้รับการพัฒนาตามคู่มือติดตั้งระบบโอเพ่นสแตคที่ [1]
-<p>
-<h2> 1. การเตรียมคอมพิวเตอร์และระบบเครือข่ายสำหรับการติดตั้ง </h2>
-<p>
-<img src="documents/openstack-host-network.png">
-<p>
+<h2> 1. Chuẩn bị máy tính để cài đặt </h2>
+	
+![image](https://github.com/khoan13583/cai_dat_openstack_victoria/assets/88971108/0d229658-bde9-4470-b1e9-47457417c2fd)
+
 ภาพ 1 โครงสร้างของเครื่องคอมพิวเตอร์และระบบเครือข่ายสำหรับติดตั้งระบบโอเพ่นสแตค <br>
 <p>
-ในการติดตั้งขอให้ผู้ติดตั้งเตรียมเครื่องคอมพิวเตอร์ที่ใช้ระบบปฏิบัติการอูบุนตูเวอร์ชั่น 20.04  (Ubuntu 20.04) จำนวน 4 เครื่องเชื่อมต่อกันด้วยระบบเครือข่ายดังภาพที่ 1 ซึ่งประกอบไปด้วยเครื่องคอมพิวเตอร์ชื่อคอนโทลเลอร์ (controller)  เน็ตเวริค์ (network) คอมพิวต์ (compute) และคอมพิวต์หนึ่ง (compute1) (โดยที่ชื่อเครื่องต้องได้รับการกำหนดในระบบปฏิบัติการอูบุนตูและเช็คได้ด้วยคำสั่ง hostname) จากภาพผู้เขียนแนะนำให้ใช้เครื่องคอนโทรเลอร์มีสแปคซิฟิเคชั่น (Specification) ขั้นต่ำสำหรับการศึกษาคือ ซีพียู (CPU) จำนวน 4 คอร์ หน่วยความจำขนาด 8 GB มีพื้นที่ดิสค์สำหรับเก็บข้อมูลขนาดอย่างน้อย 100 GB สำหรับเครื่องเน็ตเวิร์คควรมี ซีพียูจำนวน 2 คอร์ หน่วยความจำ 2 GB พื้นที่ดิสค์ 50 GB สำหรับเครื่องคอมพิวต์ และคอมพิวต์หนึ่ง แต่ละเครื่องควรมี ซีพียู 4 คอร์ หน่วยความจำ 8 GB พื้นที่ดิสค์ 100 GB ในกรณีที่ผู้อ่านต้องการติดตั้งเพื่อใช้งานจริง ผู้เขียนขอแนะนำให้ศึกษาคู่มือการใช้งานจริงที่ [2]
+Có bốn máy tính được kết nối trong một hệ thống mạng: <br>
+•	Một máy tính đóng vai trò là bộ điều khiển (Controller). Chịu trách nhiệm chạy các dịch vụ, phần mềm phục vụ các lệnh yêu cầu từ người dùng hệ thống; Xác minh danh tính của người dùng; Quản lý việc sử dụng tài nguyên và là vị trí hệ thống cơ sở dữ liệu dùng để lưu trữ dữ liệu của toàn bộ hệ thống.<br>
+•	Một máy tính đóng vai trò quản lý hệ thống mạng (Network). Chịu trách nhiệm quản lý việc trao đổi dữ liệu giữa các máy tính ảo được tạo trong hệ thống OpenStack với các máy tính bên ngoài mạng Internet.<br>
+•	Hai máy tính đóng vai trò tính toán (Compute và Compute1).  Đây là máy có trách nhiệm chạy các máy tính ảo được tạo ra bởi người dùng. Các dịch vụ và phần mềm của OpenStack trên bộ điều khiển quyết định máy ảo của người dùng sẽ chạy trên máy tính nào.<br>
+
 <p>
-ระบบปฏิบัติการติดตั้งบนแต่ละเครื่องควรได้รับการอับเดท (update) ให้เป็นอูบุนตู 20.04 เวอร์ชั่นล่าสุดและกำหนดให้ทุกเครื่องมีล็อกอิน (login) ชื่อ “opensatck” และรหัสผ่าน (password) คือ “openstack” และล็อกอินนี้จะต้องสามารถใช้คำสั่ง sudo ได้ นอกจากนั้นระบบปฏิบัติการของทุกๆเครื่องควรได้รับการตั้งเวลาที่ใกล้เคียงกัน
+Hệ điều hành của 4 máy tính đều là 20.04 LTS, tất cả các máy đều có thông tin đăng nhập với username là "openstack" và password là "openstack". Ngoài ra 4 máy tính cũng phải ở tình trạng đồng bộ về thời gian.
 <p>
-ในภาพ 1 คอมพิวเตอร์ทั้งสี่เครื่องมีหน้าที่ต่อไปนี้ 
+	
+<p>
+  Chuẩn bị hệ thống mạng kết nối bốn máy tính như sau:
 <ul>
-  <li>เครื่องคอนโทรเลอร์ ทำหน้าที่รันซอฟต์แวร์ส่วนประกอบที่ทำหน้ารองรับคำสั่งจากผู้ใช้ระบบ พิสูจน์ตัวตนของผู้ใช้ บริหารจัดการการใช้งานทรัพยากร และเป็นที่ตั้งของระบบฐานข้อมูลที่ใช้เก็บเมต้าดาต้าของทั้งระบบ
-  <li>เครื่องเน็ตเวิร์ค ทำหน้าที่จัดการการสื่อสารข้อมูลระหว่าง วีเอ็มภายในระบบโอเพ่นสแตคที่รันอยู่บนเครื่องคอมพิวต์ และคอมพิวต์หนึ่ง กับระบบเครือข่ายภายนอกระบบโอเพ่นสแตค เช่นเครือข่ายอินเตอร์เน็ต เป็นต้น 
-  <li>เครื่องคอมพิวต์ และคอมพิวต์หนึ่ง เป็นเครื่องที่ทำหน้าที่รันวีเอ็มของผู้ใช้ โดยที่ซอฟต์แวร์ส่วนประกอบของโอเพ่นสแตคบนเครื่องคอนโทลเลอร์จะตัดสินใจว่าจะรันวีเอ็มของผู้ใช้บนเครื่องคอมพิวต์เครื่องไหน 
+<li>	Mạng quản lý (Management Network – 192.l68.1.0/24): là hệ thống mạng giúp cho các dịch vụ, phần mềm của OpenStack trên các máy tính (của hệ thống) có để truyền đạt các lệnh và dữ liệu nhằm thực hiện các chức năng hệ thống khác nhau. Mạng này cũng được sử dụng để cài đặt các dịch vụ và phần mềm.
+  <li>	Mạng đường hầm dữ liệu (Data Tunel Network – 10.0.1.0/24): là hệ thống mạng được sử dụng để liên lạc dữ liệu giữa các máy ảo có thể được cấu hình để chạy trên các máy chủ khác nhau.(Được sử dụng để liên lạc dữ liệu giữa các máy ảo và các bộ định tuyến ảo mà OpenStack tạo trên máy chủ mạng. Để truyền dữ liệu VM đến các 
+    <li>	Hệ thống mạng VLAN (VLAN Network): Các máy tính trong cùng VLAN có thể giao tiếp với nhau trong cùng một miền quảng bá.
+      <li>	Mạng bên ngoài (External Network – 192.168.1.160 -- 200) : Dãy mạng cung cấp dịch vụ Internet.
 </ul>
+
+![image](https://github.com/khoan13583/cai_dat_openstack_victoria/assets/88971108/5a04ce23-9163-4abd-82c9-4724f4179674)
+
+<h2> 2. Cài đặt </h2>
 <p>
-  ในการติดตั้งที่จะได้กล่าวถึงต่อไปผู้ติดตั้งจะต้องจัดเตรียมระบบเครือข่ายที่มีการเชื่อมต่อเครื่องคอมพิวเตอร์ทั้งสี่เครื่องดังต่อไปนี้ 
-<ul>
-<li>	ระบบเครือข่ายบริหารจัดการ (Management Network) : เป็นระบบเครือข่ายสำหรับให้ซอฟต์แวร์ส่วนประกอบของโอเพ่นสแตคบนคอมพิวเตอร์ที่เกี่ยวข้องใช้สื่อสารคำสั่งและข้อมูลเพื่อดำเนินการฟังก์ชั่นการทำงานต่างๆของระบบฯ นอกจากนั้นเครือข่ายนี้ยังใช้สำหรับการติดตั้งซอฟต์แวร์ด้วย
-  <li>	ระบบเครือข่าย ดาต้าทัลเนิล (Data Tunnel Network) : เป็นระบบเครือข่ายที่โอเพ่นสแตคใช้สำหรับสื่อสารข้อมูลระหว่างวีเอ็ม (VM) ที่อาจถูกกำหนดให้รันบนต่างเครื่องโฮส และใช้สำหรับสื่อสารข้อมูลระหว่างวีเอ็ม และเร้าเตอร์เสมือนที่โอเพ่นสแตคสร้างขึ้นบนเครื่องเน็ตเวิร์คโฮส เพื่อส่งผ่านข้อมูลของวีเอ็มออกสู่ระบบเครือข่ายภายนอกและส่งผ่านข้อมูลจากระบบเครือข่ายภายนอกต่อให้วีเอ็ม
-    <li>	ระบบเครือข่าย วีแลน (VLAN Network) : เป็นระบบเครือข่ายที่อนุญาตให้วีเอ็มเชื่อมต่อเพื่อสื่อสารข้อมูลกับ แอพพลิเคชั่นดังเดิม (Legacy Applications) ขององค์กรที่ใช้ระบบเครือข่ายแบบวีแลนสื่อสารกันอยู่แล้ว 
-      <li>	ระบบเครือข่ายภายนอก (External Network) : เป็นระบบเครือข่ายที่องค์กรที่ใช้ระบบโอเพ่นสแตคใช้บริการอินเทอร์เน็ต โดยที่องค์กรจะต้องจัดสรรหมายเลขไอพีจำนวนเพื่อให้วีเอ็มในระบบโอเพ่นสแตคใช้สื่อสารกับระบบเครือข่ายอินเทอร์เน็ต
-</ul>
-<p>
-  จากตัวอย่างการจัดเตรียมทรัพยากรสำหรับการติดตั้งในภาพ 1 ผู้ติดตั้งจะต้องกำหนดค่าต่อไปนี้ด้วยตนเองก่อนทำการติดตั้ง
-  <ul>
-    <li>	กำหนดให้เครือข่ายบริหารจัดการมีค่าสับเน็ต (Subnet) คือ 10.100.20.0/24 </li>
-    <li>	เครื่องคอนโทรเลอร์เชื่อมต่อกับเครือข่ายนี้ผ่าน เน็ตเวิร์คอินเตอร์เฟสการด์ (Network Interface Card) หรือนิคส์ (NIC) ชื่อ ens3 โดยกำหนดให้มีค่าไอพี 10.100.20.11 โดยใช้เน็ตแพลน (netplan) </li>
-    <li>	กำหนดให้เครื่องเน็ตเวิร์ค เครื่องคอมพิวต์และ คอมพิวต์หนึ่ง เชื่อมต่อกับเครือข่ายบริหารฯผ่านนิคส์ ens3 และกำหนดให้ทั้งสามเครื่องมีค่าไอพีคือ 10.100.20.21 10.100.20.31 และ 10.100.20.32 ตามลำดับ </li>
-    <li>	กำหนดให้เครื่องเน็ตเวิร์คมีนิคส์ที่เชื่อมต่อกับระบบเครือข่ายอื่นๆอีกสามเครือข่าย ได้แก่ 1) ens4 ที่เชื่อมต่อกับเครือข่ายดาต้าทันเนิล 2) ens5 ที่เชื่อมต่อกับระบบเครือข่ายวีแลน และ 3) ens6 ที่เชื่อมต่อเครื่องเน็ตเวิร์คกับระบบเครือข่ายภายนอก </li>
-    <li>	สำหรับเครื่องคอมพิวต์และคอมพิวต์หนึ่งนั้น กำหนดให้ทั้งสองเครื่องใช้นิคส์ ens4 เชื่อมต่อกับระบบเครือข่ายดาต้าทัลเนิล และใช้นิคส์ ens5 เชื่อมต่อกับเครือข่ายวีแลน </li>
-  </ul>
-  ผู้ติดตั้งไม่ต้องกำหนดค่าไอพีอื่นๆในภาพ 1 ที่เป็นอักษรตัวเอียงด้วยตนเองเหมือนที่ทำกับ ens3 แต่จะต้องระบุค่าที่ไอพีที่ต้องการในไฟล์กำหนดค่าของซอฟต์แวร์สคริปต์สำหรับติดตั้ง ดังที่จะได้กล่าวถึงต่อไป
-<p>
-<p>
-<h2> 2. การติดตั้งโดยใช้สคริปต์ </h2>
-<p>
-ผู้เขียนได้พัฒนาเชลสคริปต์สำหรับติดตั้งระบบโอเพ่นสแตคสามเวอร์ชั่นดังแสดงในตารางที่ 7-1 โดยอ้างอิงข้อมูลคำสั่งที่ใช้จากคู่มืออย่างเป็นทางการที่ [1] ในการติดตั้งที่จะบรรยายต่อไปผู้เขียนจะใช้สคริปต์สำหรับติดตั้งระบบโอเพ่นสแตคเวอร์ชั่นวิคทอเรียซึ่งเป็นเวอร์ชั่นที่เชื่อถือได้เพราะได้รับการเผยแพร่และมีการแก้ไขข้อผิดพลาดหลังเผยแพร่มาเป็นระยะเวลาหนึ่งแล้ว
-ผู้ติดตั้งเริ่มการติดตั้งโดยล๊อกอินเข้าสู่เครื่องคอนโทรเลอร์ และเรียกใช้ screen เพื่อสร้าง screen session เพื่อป้องกันการสูญเสียการเชื่อมต่อจากคอมพิวเตอร์ที่ผู้ติดตั้งใช้มายังเครื่องคอนโทลเลอร์ในกรณีที่ผู้ติดตั้งรีโมทล็อกอินเข้าสู่เครื่องคอมโทรเลอร์ หลังจากนั้นผู้ติดตั้งจะใช้ git utility เพื่อดาวโหลดสคริปสำหรับติดตั้งจาก github มาสู่ไดเรคทอรี $HOME/openstack-victoria-basic-installer โดยที่ในตัวอย่างการติดตั้งนี้ $HOME คือ /home/openstack 
+Tải tập tin cài đặt về máy Controller bằng công cụ Git.
 <pre>
 On controller: 
 $ screen
@@ -55,12 +42,9 @@ Cloning into 'openstack-victoria-basic-installer'...
 $ ls
 openstack-victoria-basic-installer
 </pre>
-<pre>
-Playlist: <a href="https://www.youtube.com/playlist?list=PLmUxMbTCUhr684_pVrjSZYgqmJX757pcp">https://www.youtube.com/playlist?list=PLmUxMbTCUhr684_pVrjSZYgqmJX757pcp</a>
-Video 01: <a href="https://youtu.be/CKRYqGAQ5p0">https://youtu.be/CKRYqGAQ5p0</a>
-</pre>
+
 <p>
-  หลังจากนั้นให้ cd เข้าสู่ openstack-victoria-basic-installer และลิสต์ชื่อไฟล์และสับไดเรคทอรี
+  Sau đó cd vào thư mục openstack-victoria-basic-installer và liệt kê các thư mục có trong đó.
 <pre>
 On controller: 
 $ cd openstack-victoria-basic-installer/
@@ -70,139 +54,7 @@ Deployments  exe-config-installer.sh     OPSInstaller-init.tar    vmhosts-script
 documents    install-paramrc.sh          README.md
 $ 
 </pre>
-<p>
-ผู้ติดตั้งจะต้องแก้ไขไฟล์ install-paramrc.sh เพื่อกำหนดค่าพารามีเตอร์ (parameters) สำหรับการติดตั้ง ผู้เขียนจะนำเสนอพารามีเตอร์เป็นชุดๆ ซึ่งพารามีเตอร์ในแต่ละชุดมีความหมายดังต่อไปนี้
-<ul>
-  <li>	INSTALL_TYPE ระบุค่าชนิดของการติดตั้งสองแบบได้แก่ full หมายถึงติดตั้งบนเครื่องคอมพิวเตอร์ที่เตรียมไว้ทั้งสี่เครื่อง หรือ compact คือติดตั้งบนสามเครื่อง (ทุกเครื่องยกเว้นเครื่องคอมพิวต์หนึ่ง)
-  <li>	NETWORK_TYPE ระบุชนิดของระบบเครือข่ายซึ่งกำหนดให้เป็น classic_ovs ซึ่งหมายถึงการเลือกใช้ระบบ openvswitch สำหรับสร้างระบบเครือข่ายเสมือนภายในระบบโอเพ่นสแตค
-  <li>	PASSWD_TYPE คือการกำหนดค่ารหัสผ่านสำหรับซอฟต์แวร์ส่วนประกอบต่างๆของโอเพ่นสแตคซึ่ง studypass คือการใช้ชุดของรหัสผ่านที่เข้าใจได้เพื่อใช้ในการศึกษาการติดตั้ง ในขณะที่ randompass หมายถึงการกำหนดค่ารหัสผ่านด้วยการสุ่มค่าตัวเลขจำนวนเต็ม
-</ul>
-<pre>
-On controller: 
-$ vi install-paramrc.sh 
-…
-export INSTALL_TYPE=full
-export NETWORK_TYPE=classic_ovs
-export PASSWD_TYPE=studypass
-</pre>
-<ul>
-  <li>	OPS_LOGIN_NAME และ OPS_LOGIN_PASS คือชื่อล๊อกอินและรหัสรหัสผ่านของแอคเค้าต์ (account) บนเครื่องคอมพิวเตอร์ที่เตรียมไว้สำหรับติดตั้งโอเพ่นสแตคทุกเครื่อง
-  <li>	OPS_TIMEZONE คือการกำหนดค่าไทม์โซนสำหรับตั้งเวลาบนเครื่องคอมพิวเตอร์ที่เตรียมไว้ดังกล่าว
-</ul>
-<pre>
-…
-export OPS_LOGIN_NAME=openstack
-export OPS_LOGIN_PASS=openstack
-export OPS_TIMEZONE=Asia\\/Bangkok 
-…
-</pre>
-<ul>
-  <li>	OPS_MYSQL_PASS เป็นพารามีเตอร์สำหรับระบุค่ารหัสผ่านสำหรับรูท (root) แอคเค้าต์ของระบบฐานข้อมูลของโอเพ่นสแตค
-  <li>	DEMO_PASS และ ADMIN_PASS ใช้สำหรับกำหนดค่ารหัสผ่านของผู้ใช้ตัวอย่าง (Demo user) และค่ารหัสผ่านของผู้ดูแลระบบโอเพ่นสแตคที่กำลังจะสร้างขึ้น
-  <li>	HYPERVISOR เป็นพารามีเตอร์ที่กำหนดชนิดของซอฟต์แวร์ไฮเปอร์ไวเซอร์ที่ระบบโอเพ่นสแตคจะใช้สร้างวีเอ็ม มีสองแบบให้กำหนดได้แก่ 1) kvm ที่ผู้ติดตั้งจะกำหนดค่านี้ได้ก็ต่อเมื่อคอมพิวเตอร์ที่ระบบโอเพ่นสแตคจะรันวีเอ็มมีฮารด์แวร์ที่สนับสนุนการประมวลผลแบบเสมือร และ 2) qemu ที่สามารถสร้างวีเอ็มได้บนคอมพิวเตอร์ที่ไม่มีฮาร์ดแวร์สนับสนุนการประมวลผลแบบเสมือน
-</ul>
-<pre>
-…
-export OPS_MYSQL_PASS=mysqlpassword
-export DEMO_PASS=demopassword
-export ADMIN_PASS=adminpassword
-#
-export HYPERVISOR=kvm
-…
-</pre>
-<ul>
-  <li>	INIT_IMAGE_LOCATION เป็นที่ระบุค่ายูอาร์แอล (URL) ของไฟล์อิมเมจ (image) ของระบบลินุกส์ขนาดเล็กชื่อว่าระบบ cirros เพื่อใช้ทดสอบการสร้างและใช้งานวีเอ็มหลังจากติดตั้งระบบโอเพ่นสแตคเสร็จ
-  <li>	INIT_IMAGE_NAME ชื่อของอิมเมจในข้อ 9
-  <li>	DOMAINNAME คือโกเมน (domain) ของระบบเครือข่ายที่ใช้ติดตั้งระบบ
-  <li>	NTP_SERVER0 ถึง NTP_SERVER3 เป็นการกำหนดชื่อ เซริฟเวอร์ที่ใช้อ้างอิงเวลาเอ็นทีพี (NTP Time Server) ซึ่งในที่นี้กำหนดค่าเซริฟเวอร์มาตรฐานไว้เป็นค่าดีฟอลต์ (Default)
-</ul>
-<pre>
-…
-export INIT_IMAGE_LOCATION=http:\\/\\/download.cirros-cloud.net\\/0.4.0\\/cirros-0.4.0-x86_64-disk.img
-export INIT_IMAGE_NAME=cirros
-#
-export DOMAINNAME=cs.tu.ac.th
-# ntp servers
-export NTP_SERVER0=0.th.pool.ntp.org
-export NTP_SERVER1=1.th.pool.ntp.org
-export NTP_SERVER2=2.th.pool.ntp.org
-export NTP_SERVER3=3.th.pool.ntp.org
-…
-</pre>
-<p>
-<img src="documents/host-params-mapping.png">
-<p>
-ภาพ 2 แผนภาพแสดงพารามีเตอร์เกี่ยวกับระบบเครือข่ายสำหรับการติดตั้งระบบโอเพ่นสแตค
-<p>
-ถัดจากนั้นจะเป็นการกำหนดค่าของระบบเครือข่ายที่จำเป็นต้องใช้ในการติดตั้งโอเพ่นสแตค ภาพ 7-2 แสดงความเกี่ยวข้องของตัวแปรต่างๆในไฟล์ install_paramrc.sh กับโครงสร้างของคอมพิวเตอร์และระบบเครือข่ายที่รองรับการติดตั้งระบบโอเพ่นสแตค
-<ul>
-  <li>	MANAGEMENT_NETWORK_NETMASK และ MANAGEMENT_NETWORK และ MANAGEMENT_NETWORK_BROADCAST_ADDRESS เป็นพารามีเตอร์สำหรับกำหนดค่าระบบเครือข่ายบริหารจัดการของระบบโอเพ่นสแตค
-  <li>	DNS_IP เป็นการกำหนดค่าไอพีของ ดีเอ็นเอส เซริฟเวอร์ (DNS server)
-  <li>	CONTROLLER_IP และ CONTROLLER_IP_NIC คือพารามีเตอร์ค่าไอพีและชื่อนิคส์ของเครื่องคอมโทรเลอร์บนระบบเครือข่ายบริหารจัดการ
-  <li>	GATEWAY_IP เป็นการระบุค่าไอพีของเร้าเตอร์เกตเวย์ (router gateway) ของระบบเครือข่ายบริหารจัดการ 
-  <li>	NETWORK_IP และ NETWORK_IP_NIC คือพารามีเตอร์ค่าไอพีและชื่อนิคส์ของเครื่องเน็ตเวิร์คบนระบบเครือข่ายบริหารจัดการ
-</ul>
-<pre>
-export MANAGEMENT_NETWORK_NETMASK=255.255.255.0
-export MANAGEMENT_NETWORK=10.100.20.0
-export MANAGEMENT_BROADCAST_ADDRESS=10.100.20.255 
-export DNS_IP=8.8.8.8
-…
-export CONTROLLER_IP=10.100.20.11
-export CONTROLLER_IP_NIC=ens3
-export GATEWAY_IP=10.100.20.1
-…
-export NETWORK_IP=10.100.20.21
-export NETWORK_IP_NIC=ens3
-</pre>
-<ul>
-  <li>	DATA_TUNNEL_NETWORK_NODE_IP และ DATA_TUNNEL_NETWORK_NODE_IP_NIC เป็นการระบุค่าไอพีและชื่อนิคส์ที่เครื่องเน็ตเวิร์คใช้เชื่อมต่อกับระบบเครือข่ายดาต้าทัลเนิล
-  <li>	DATA_TUNNEL_NETWORK_ADDRESS และ DATA_TUNNEL_NETWORK_NETMASK เป็นการระบุค่าสับเน็ตของระบบเครือข่ายดาต้าทัลเนิล
-</ul>
-<pre>
-export DATA_TUNNEL_NETWORK_NODE_IP=10.0.1.21
-export DATA_TUNNEL_NETWORK_NODE_IP_NIC=ens4
-export DATA_TUNNEL_NETWORK_ADDRESS=10.0.1.0
-export DATA_TUNNEL_NETWORK_NETMASK=255.255.255.0
-</pre>
-<ul>
-  <li>	VLAN_NETWORK_NODE_IP_NIC เป็นพารามีเตอร์ที่ระบุว่าเครื่องเน็ตเวิร์คเชื่อมต่อกับระบบเครือข่าววีแลนผ่านนิคส์ใด
-  <li>	EXTERNAL_CIDR และ EXTERNAL_CIDR_NIC เป็นการระบุค่าสับเน็ตของระบบเครือข่ายภายนอกที่เครื่องเน็ตเวิร์คเชื่อมต่อและชื่อของนิคส์ที่เชื่อมต่อระบบเครือข่ายดังกล่าว
-  <li>	EXTERNAL_GATEWAY_IP เป็นพรามีเตอร์ที่ระบุค่าไอพีของเร้าเตอร์เกตเวย์ของระบบเครือข่ายถายนอก
-  <li>	START_FLOATING_IP และ END_FLOATING_IP เป็นการระบุชุดบล้อค (block) ของค่าไอพีจากระบบเครือข่ายภายนอกที่ระบบโอเพ่นสแตคสามารถนำไปใช้เพื่อเป็นค่าไอพีของวีเอ็มที่ระบบฯสร้างขึ้นเพื่อที่จะทำให้วีเอ็มนั้นสามารถปฏิบัติงานเป็นเซริฟเวอร์ให้คอมพิวเตอร์เครื่องอื่นติดต่อผ่านระบบเครือข่ายภายนอกได้
-</ul>
-<pre>
-export VLAN_NETWORK_NODE_IP_NIC=ens5
-…
-export EXTERNAL_CIDR=10.100.20.0\\/24
-export EXTERNAL_CIDR_NIC=ens6
-export EXTERNAL_GATEWAY_IP=10.100.20.1
-…
-export START_FLOATING_IP=10.100.20.160
-export END_FLOATING_IP=10.100.20.200
-</pre>
-<ul>
-  <li>	COMPUTE_IP และ COMPUTE_IP_NIC เป็นพารามีเตอร์เพื่อระบุค่าไอพีและนิคส์ของเครื่องคอมพิวต์ที่เชื่อมต่อกับระบบเครือข่ายบริหารจัดการ
-  <li>	DATA_TUNNEL_COMPUTE_NODE_IP และ DATA_TUNNEL_COMPUTE_NODE_IP_NIC เป็นการระบุค่าไอพีและนิคส์ที่เครื่องคอมพิวต์ใช้เชื่อมต่อกับระบบเครือข่ายดาต้าทัลเนิล
-  <li>	VLAN_COMPUTE_NODE_IP_NIC เป็นการระบุชื่อของนิคส์ของเครื่องคอมพิวต์ที่ใช้เชื่อมต่อกับระบบเครือข่ายวีแลน ผู้ติดตั้งไม่จำเป็นต้องกำหนดค่าไอพีสำหรับนิคส์นี้
-</ul>
-<pre>
-export COMPUTE_IP=10.100.20.31
-export COMPUTE_IP_NIC=ens3
-export DATA_TUNNEL_COMPUTE_NODE_IP=10.0.1.31
-export DATA_TUNNEL_COMPUTE_NODE_IP_NIC=ens4
-export VLAN_COMPUTE_NODE_IP_NIC=ens5
-</pre>
-<ul>
-  <li>	COMPUTE1_IP จนถึง VLAN_COMPUTE1_NODE_IP_NIC เป็นการระบุค่าแบบเดียวกับข้อ 12 ถึง 14 สำหรับเครื่องคอมพิวต์หนึ่ง
-</ul>
-<pre>
-export COMPUTE1_IP=10.100.20.32
-export COMPUTE1_IP_NIC=ens3
-export DATA_TUNNEL_COMPUTE1_NODE_IP=10.0.1.32
-export DATA_TUNNEL_COMPUTE1_NODE_IP_NIC=ens4
-export VLAN_COMPUTE1_NODE_IP_NIC=ens5
-</pre>
+
 <p>
   หลังจากที่ผู้ติดตั้งระบุค่าในไฟล์ install-paramrc.sh แล้ว ผู้ติดตั้งต้องรันสคริปต์ ./exe-config-installer.sh เพื่อสร้างสคริปต์จำนวนหนึ่งที่ได้รับการแทนค่าพารามีเตอร์ต่างๆให้พร้อมสำหรับการติดตั้ง
 <pre>
