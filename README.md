@@ -36,7 +36,7 @@ Tải tập tin cài đặt về máy Controller bằng công cụ Git.
 On controller: 
 $ screen
 $ git init
-$ git clone https://github.com/khoan13583/cai-dat-openstack
+$ git clone https://github.com/khoan13583/cai-dat-openstack.git
 Cloning into 'cai-dat-openstack'...
 $ ls
 cai-dat-openstack
