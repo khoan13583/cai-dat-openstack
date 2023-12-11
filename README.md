@@ -36,8 +36,8 @@ Tải tập tin cài đặt về máy Controller bằng công cụ Git.
 On controller: 
 $ screen
 $ git init
-$ git clone https://github.com/kasidit/openstack-victoria-basic-installer
-Cloning into 'openstack-victoria-basic-installer'...
+$ git clone https://github.com/khoan13583/cai_dat_openstack_victoria.git
+Cloning into 'cai_dat_openstack_victoria'...
 $ ls
 openstack-victoria-basic-installer
 </pre>
