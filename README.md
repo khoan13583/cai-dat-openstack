@@ -44,7 +44,7 @@ cai-dat-openstack
 </pre>
 
 <p>
-  Sau đó cd vào thư mục openstack-victoria-basic-installer.
+  Sau đó cd vào thư mục cai-dat-openstack.
 <pre>
 On controller: 
 $ cd cai-dat-openstack/
@@ -52,7 +52,15 @@ $
 </pre>
 
 <p>
-  Sau khi điều chỉnh các thông số cài đặt theo mong muốn, chạy lệnh ./exe-config-installer.sh cài đặt theo các thông số đã đặt.
+  Mở và chỉnh sửa các thông số cài đặt trong file install-paramrc.sh theo mong muốn.
+<pre>
+On controller: 
+$ sudo nano install-paramrc.sh
+$
+</pre>
+
+<p>
+  Sau khi điều chỉnh các thông số cài đặt theo mong muốn, chạy lệnh ./exe-config-installer.sh cài đặt theo các thông số đã đặt ở file install-paramrc.sh.
 <pre>
 On controller: 
 $ pwd
