@@ -43,15 +43,11 @@ cai-dat-openstack
 </pre>
 
 <p>
-  Sau đó cd vào thư mục openstack-victoria-basic-installer và liệt kê các thư mục có trong đó.
+  Sau đó cd vào thư mục openstack-victoria-basic-installer.
 <pre>
 On controller: 
 $ cd cai-dat-openstack/
-$ ls
-config.d     example.install-paramrc.sh  LICENSE                  Untarfiles
-Deployments  exe-config-installer.sh     OPSInstaller-init.tar    vmhosts-scripts
-documents    install-paramrc.sh          README.md
-$ 
+$
 </pre>
 
 <p>
@@ -107,7 +103,7 @@ $ sudo reboot
 </pre>
 
 <p>
- Thực hiện trên máy Network (chuyển đến thư mục /network) và thực hiện trên máy lần lượt trên hai máy chủ Compute và Compute1 (chuyển đến thư mục /compute và /compute1):
+ Thực hiện trên máy Network (chuyển đến thư mục /network) và thực hiện trên máy lần lượt trên hai máy chủ Compute và Compute1 (chuyển đến thư mục /compute và /compute1).
 <pre>
 On network: 
 $ cd OPSInstaller/network/
@@ -142,7 +138,7 @@ $ cd OPSInstaller/network/
 $ sudo ./exe-stage02-SUDO-network-preinstall.sh
 
 </pre>
-Thực hiện lần lượt trên hai máy chủ Compute và Compute1 (chuyển đến thư mục /compute và /compute1):
+Thực hiện lần lượt trên hai máy chủ Compute và Compute1 (chuyển đến thư mục /compute và /compute1).
 <pre>
 On compute: 
 $ cd OPSInstaller/compute/
@@ -161,7 +157,7 @@ $ sudo ./exe-stage03-SUDO-compute-preinstall.sh
 <h3>4. Cài đặt hệ thống cơ sở dữ liệu MariaDB (Setting up mariadb)</h3>
 <p>
  MariaDB là một hệ quản trị cơ sở dữ liệu mã nguồn mở được phát triển từ MySQL. Trong môi trường OpenStack, MariaDB thường được sử dụng làm cơ sở dữ liệu cho các dịch vụ do tính nhất quán với mô hình mã nguồn mở của OpenStack.
-Thực hiện trên máy Controller (chuyển đến thư mục /controller) để sử dụng phần mềm chronyc để đồng bộ thời gian với máy chủ NTP, đồng thời cài đặt hệ thống cơ sở dữ liệu MariaDB:
+Thực hiện trên máy Controller (chuyển đến thư mục /controller) để sử dụng phần mềm chronyc để đồng bộ thời gian với máy chủ NTP, đồng thời cài đặt hệ thống cơ sở dữ liệu MariaDB.
 <pre>
 On controller: 
 $ pwd
@@ -187,7 +183,7 @@ Reload privilege tables now? [Y/n] nhập Y
 $ 
 </pre>
 
-Thực hiện trên máy Network (chuyển đến thư mục /network) để chạy phần mềm chronyc để đồng bộ thời gian với máy điều khiển (Controller), đồng thời cài đặt hệ thống cơ sở dữ liệu MariaDB:
+Thực hiện trên máy Network (chuyển đến thư mục /network) để chạy phần mềm chronyc để đồng bộ thời gian với máy điều khiển (Controller), đồng thời cài đặt hệ thống cơ sở dữ liệu MariaDB.
 <pre>
 On network: 
 $ cd OPSInstaller/network/
@@ -196,7 +192,7 @@ $
 ...
 </pre>
 
-Thực hiện trên máy lần lượt trên hai máy chủ Compute và Compute1 (chuyển đến thư mục /compute và /compute1) chạy phần mềm chronyc để đồng bộ thời gian với máy điều khiển (Controller), đồng thời cài đặt hệ thống cơ sở dữ liệu MariaDB:
+Thực hiện trên máy lần lượt trên hai máy chủ Compute và Compute1 (chuyển đến thư mục /compute và /compute1) chạy phần mềm chronyc để đồng bộ thời gian với máy điều khiển (Controller), đồng thời cài đặt hệ thống cơ sở dữ liệu MariaDB.
 <pre>
 On compute: 
 $ cd OPSInstaller/compute/
@@ -214,7 +210,7 @@ $
 Trong môi trường điện toán đám mây, như OpenStack, RabbitMQ thường được sử dụng để quản lý và truyền tải các thông điệp giữa các thành phần khác nhau của hệ thống. 
 OpenStack sử dụng phần mềm này để giao tiếp các lệnh và dữ liệu giữa các thành phần phần mềm khác nhau có thể nằm trên cùng một chủ hoặc trên các máy khác nhau. <br>
 <p>
-	Thực hiện trên máy Controller (chuyển đến thư mục /controller) để cài đặt phần mềm RabbitMQ lên máy chủ điều khiển: 
+	Thực hiện trên máy Controller (chuyển đến thư mục /controller) để cài đặt phần mềm RabbitMQ lên máy chủ điều khiển.
 <pre>
 On controller: 
 $ sudo ./exe-stage07-SUDO-rabbit.sh
@@ -223,7 +219,7 @@ $ sudo ./exe-stage07-SUDO-rabbit.sh
 <p>
 <h3>6. Cài đặt Keystone (Keystone Installation)</h3>
 <p>
-Thực hiện trên máy Controller (chuyển đến thư mục /controller) để cài đặt Keystone lên máy chủ điều khiển: 
+Thực hiện trên máy Controller (chuyển đến thư mục /controller) để cài đặt Keystone lên máy chủ điều khiển.
 <pre>
 On controller: 
 $ sudo ./exe-stage08-SUDO-keystone-database.sh
@@ -235,7 +231,7 @@ $ ./exe-stage11-USER-test-envscript.sh
 <p>
 <h3>7. Cài đặt Glance (Glance Installation)</h3>
 <p>
-Thực hiện trên máy Controller (chuyển đến thư mục /controller) để cài đặt Glance lên máy chủ điều khiển:
+Thực hiện trên máy Controller (chuyển đến thư mục /controller) để cài đặt Glance lên máy chủ điều khiển.
 <pre>
 On controller: 
 $ sudo ./exe-stage12-SUDO-glance-database.sh
@@ -250,7 +246,7 @@ $ ./exe-stage15-USER-verify-glance.sh
 <p>
 Nền tảng là một dịch vụ phần mềm ngăn xếp mở có chức năng xác định các lớp và thuộc tính của tài nguyên hệ thống như CPU ảo, bộ nhớ và bộ lưu trữ, đồng thời thu thập dữ liệu lịch sử sử dụng (theo dõi) của các tài nguyên đó.
 <p>
-Thực hiện trên máy Controller (chuyển đến thư mục /controller) để cài đặt Placement lên máy chủ điều khiển:
+Thực hiện trên máy Controller (chuyển đến thư mục /controller) để cài đặt Placement lên máy chủ điều khiển.
 <pre>
 On controller: 
 $ sudo ./exe-stage15-x1-SUDO-placement-database.sh
@@ -261,7 +257,7 @@ $ sudo ./exe-stage15-x3-SUDO-placement.sh
 <p>
 <h3>9. Cài đặt Nova (Nova Installation)</h3>
 <p>
-Thực hiện trên máy Controller (chuyển đến thư mục /controller) để cài đặt Nova lên máy chủ điều khiển:
+Thực hiện trên máy Controller (chuyển đến thư mục /controller) để cài đặt Nova lên máy chủ điều khiển.
 <pre>
 On controller: 
 $ sudo ./exe-stage16-SUDO-nova-database.sh
@@ -269,7 +265,7 @@ $ ./exe-stage17-USER-nova-endpoints.sh
 $ sudo ./exe-stage18-SUDO-nova.sh
 </pre>
 
-Thực hiện lần lượt trên hai máy chủ Compute và Compute1 (chuyển đến thư mục /compute và /compute1):
+Thực hiện lần lượt trên hai máy chủ Compute và Compute1 (chuyển đến thư mục /compute và /compute1).
 <pre>
 On compute & compute1: 
 $ cd OPSInstaller/compute/
@@ -277,7 +273,7 @@ $ sudo ./exe-stage19-SUDO-nova-compute.sh
 $ sudo ./exe-stage19-x1-SUDO-nova-compute.sh
 </pre>
 
-Thực hiện trên máy Controller (chuyển đến thư mục /controller) để kiểm tra khả năng phối hợp đồng bộ của của máy chủ điều khiển với hai chủ máy tính toán:
+Thực hiện trên máy Controller (chuyển đến thư mục /controller) để kiểm tra khả năng phối hợp đồng bộ của của máy chủ điều khiển với hai chủ máy tính toán.
 <pre>
 On controller: 
 $ ./exe-stage20-0-USER-verify-nova-compute.sh
@@ -296,7 +292,7 @@ $ ./exe-stage20-2-USER-verify-nova.sh
 
 <h3>10. Cài đặt Neutron (Neutron Installation)</h3>
 <p>
-Thực hiện trên máy Controller (chuyển đến thư mục /controller) để cài đặt Neutron lên máy chủ điều khiển:
+Thực hiện trên máy Controller (chuyển đến thư mục /controller) để cài đặt Neutron lên máy chủ điều khiển.
 <pre>
 On controller: 
 $ sudo ./exe-stage21-SUDO-neutron-database.sh
@@ -305,40 +301,40 @@ $ sudo ./exe-stage23-SUDO-neutron.sh
 $ ./exe-stage24-USER-verify-neutron.sh
 </pre>
 
-Thực hiện trên máy Network (chuyển đến thư mục /network):
+Thực hiện trên máy Network (chuyển đến thư mục /network).
 <pre>
 On network: 
 $ cd OPSInstaller/network/
 $ sudo ./exe-stage25-SUDO-network-neutron.sh
 </pre>
 
-Thực hiện trên máy Controller (chuyển đến thư mục /controller):
+Thực hiện trên máy Controller (chuyển đến thư mục /controller).
 <pre>
 On controller: 
 $ sudo ./exe-stage26-SUDO-reconfig-neutron-nova.sh
 </pre>
 
-Thực hiện trên máy Network (chuyển đến thư mục /network):
+Thực hiện trên máy Network (chuyển đến thư mục /network).
 <pre>
 On network: 
 $ cd OPSInstaller/network/
 $ sudo ./exe-stage27-SUDO-ovs-service.sh
 </pre>
 
-Thực hiện trên máy Controller (chuyển đến thư mục /controller):
+Thực hiện trên máy Controller (chuyển đến thư mục /controller).
 <pre>
 On controller: 
 $ ./exe-stage28-USER-verify-neutron2.sh
 </pre>
 
-Thực hiện lần lượt trên hai máy chủ Compute và Compute1 (chuyển đến thư mục /compute và /compute1):
+Thực hiện lần lượt trên hai máy chủ Compute và Compute1 (chuyển đến thư mục /compute và /compute1).
 <pre>
 On compute & compute1: 
 $ cd OPSInstaller/compute/
 $ sudo ./exe-stage29-SUDO-compute-neutron.sh
 </pre>
 
-Thực hiện trên máy Controller (chuyển đến thư mục /controller):
+Thực hiện trên máy Controller (chuyển đến thư mục /controller).
 <pre>
 On controller: 
 $ ./exe-stage30-USER-verify-neutron3.sh
@@ -346,7 +342,7 @@ $ ./exe-stage30-USER-verify-neutron3.sh
 
 <h3>11. Tạo một mạng ảo ban đầu để kiểm thử (Test Initial Networks)</h3>
 <p>
-Thực hiện trên máy Controller (chuyển đến thư mục /controller):
+Thực hiện trên máy Controller (chuyển đến thư mục /controller).
 
 <pre>
 On controller: 
@@ -356,7 +352,7 @@ $ ./exe-stage36-USER-initial-network.sh
 <p>
 <h3>12. Cài đặt Horizon (Horizon Installation)</h3>
 <p>
-Thực hiện trên máy Controller (chuyển đến thư mục /controller):
+Thực hiện trên máy Controller (chuyển đến thư mục /controller).
 <pre>
 On controller: 
 $ sudo ./exe-stage37-SUDO-horizon.sh
@@ -365,7 +361,7 @@ $ sudo ./exe-stage37-SUDO-horizon.sh
 <p>
 <h3>13. Cài đặt Cinder (Cinder Installation)</h3>
 <p>
-Thực hiện trên máy Controller (chuyển đến thư mục /controller) để cài đặt Cinder:
+Thực hiện trên máy Controller (chuyển đến thư mục /controller) để cài đặt Cinder.
 <pre>
 On controller: 
 $ sudo ./exe-stage38-SUDO-cinder-database.sh
@@ -374,7 +370,7 @@ $ sudo ./exe-stage40-SUDO-cinder.sh
 </pre>
 
 <p>
-Thực hiện trên máy Compute (chuyển đến thư mục /compute):
+Thực hiện trên máy Compute (chuyển đến thư mục /compute).
 <pre>
 On compute: 
 $ cd OPSInstaller/compute/
