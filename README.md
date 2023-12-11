@@ -36,17 +36,17 @@ Tải tập tin cài đặt về máy Controller bằng công cụ Git.
 On controller: 
 $ screen
 $ git init
-$ git clone https://github.com/khoan13583/openstack-victoria-basic-installer
-Cloning into 'openstack-victoria-basic-installer'...
+$ git clone https://github.com/khoan13583/cai-dat-openstack
+Cloning into 'cai-dat-openstack'...
 $ ls
-openstack-victoria-basic-installer
+cai-dat-openstack
 </pre>
 
 <p>
   Sau đó cd vào thư mục openstack-victoria-basic-installer và liệt kê các thư mục có trong đó.
 <pre>
 On controller: 
-$ cd openstack-victoria-basic-installer/
+$ cd cai-dat-openstack/
 $ ls
 config.d     example.install-paramrc.sh  LICENSE                  Untarfiles
 Deployments  exe-config-installer.sh     OPSInstaller-init.tar    vmhosts-scripts
@@ -59,7 +59,7 @@ $
 <pre>
 On controller: 
 $ pwd
-/home/openstack/openstack-victoria-basic-installer
+/home/openstack/cai-dat-openstack
 $ ./exe-config-installer.sh
 </pre>
 
@@ -81,7 +81,7 @@ Tên của mỗi script có chuỗi ký tự “*StageNN*”, trong đó NN là 
 On controller: 
 $ cd installer
 $ pwd
-/home/openstack/openstack-wallaby-basic-installer/OPSInstaller/installer
+/home/openstack/cai-dat-openstack/OPSInstaller/installer
 $ sudo ./exe-preinstall00-SUDO-update.sh
 $ ./exe-preinstall01-USER-set-remote-access.sh
 $ ./exe-preinstall02-USER-set-openstack-nodes.sh
